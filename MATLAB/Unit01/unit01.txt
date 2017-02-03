@@ -1,0 +1,117 @@
+
+Introduction to MATLAB:
+=======================
+
+% Read and Replay an Audio Recording
+
+>> [X,Fs]=audioread('SpeechExample1.wav');
+>> sound(X,Fs);
+
+% Inspect the Vector of Samples
+
+>> size(X)
+>> X(1:10)
+
+% Reminder about the Colon Operator
+
+>> 1:10
+>> 1:2:10
+>> 10:-0.5:5
+
+% Reminder about Vector Indexing
+>> A=[ 1 4 7 6 2 3 ]
+>> A([1 3 6])
+>> A(3:end)
+>> A(:)
+
+% Plot the Recording
+
+>> plot(X)
+
+>> t=(0:length(X)-1)/Fs;
+>> h=plot(t,X); axis([ t(1) t(end) -1.1 1.1 ]); grid on
+>> xlabel('Time [s]'); ylabel('Amplitude');
+>> title('She had your dark suit in greasy wash water all year.');
+>> set(h,'Color',[0 0.5 0.5],'LineWidth',2);
+>> legend('Recorded Waveform');
+
+% Plot a Small Subsection of the Recording
+
+>> n=30000:30030;
+>> plot(t(n),X(n)); hold on
+>> stem(t(n),X(n)); hold off
+
+% Playing with Samples
+% Sampling Rate Mismatch/Playing Things Backwards
+
+>> Fs
+>> sound(X,10000);
+>> sound(X,20000);
+>> sound(flipud(X),16000);
+
+% Discuss Difference between "flipud" and "fliplr"
+
+>> A
+>> fliplr(A)
+>> A(:)
+>> flipud(A(:))
+
+% Discuss Loudness Aspect
+% => Distortion due to clipping if above/below +/- 1
+
+>> sound(X,Fs)
+>> sound(0.2*X,Fs)
+>> sound(2.0*X,Fs)
+>> Y=200*X;
+>> sound(Y,Fs);
+>> sound(Y/max(abs(Y)),Fs);
+>> soundsc(Y,Fs);
+
+% Load and Play a Second Signal
+
+>> [Y,Fs]=audioread('SpeechExample2.wav');
+>> sound(Y,Fs);
+
+% Adding of Signals
+
+>> X+Y
+>> Lx=length(X);
+>> Ly=length(Y);
+>> Z=X+[Y;zeros(Lx-Ly,1)];
+>> sound(Z/max(abs(Z)),Fs);
+
+% Multiplication of Signals
+
+>> Z=X.*[Y;zeros(Lx-Ly,1)];
+>> sound(Z/max(abs(Z)),Fs);
+
+% Echo Generator with 50msec Delay
+
+>> N=round(50e-3*Fs)
+>> Z=[X;zeros(N,1)]+0.5*[zeros(N,1);X];
+>> sound(Z,Fs);
+
+% Introduction to Logical Indexing
+
+>> A=[ 2 9 3 5 6 5 7 8 ]
+>> class(A)
+>> LIX=logical([ 1 0 0 0 1 0 0 1 ])
+>> class(LIX)
+>> A(LIX)
+>> A
+>> (A>5)
+>> A(A>5)
+>> A(A>5)=-1
+
+% Using Logical Indexing for Clipping
+
+>> Z=X;
+>> Z(Z>0.2)=0.2; Z(Z<-0.2)=-0.2;
+>> plot(t,X,'b',t,Z,'r'); axis([t(1) t(end) -1.1 1.1]); grid on;
+
+% Effects of Quantization
+
+>> x=linspace(-2,2,5001); plot(x,usquant(x,10)); grid on;
+>> Z=usquant(X,10); sound(X,Fs); sound(Z,Fs); plot(t,Z);
+
+

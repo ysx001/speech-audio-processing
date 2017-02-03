@@ -1,0 +1,13 @@
+X=[ 1 1 1 1 1 1 1 1 1 1 ]; NX=-1; MX=+8;
+Y=[ 2 3 4 -4 -3 -2 -1 ];   NY=+5; MY=+11;
+[Z,NZ]=addsignals(X,NX,Y,NY); MZ=NZ+length(Z)-1;
+subplot(2,1,1); h=stem(NX:MX,X); hold on;
+set(h,'Color',[1 0 0],'Marker','*');
+h=stem(NY:MY,Y); hold off;
+set(h,'Color',[0 0.5 0],'Marker','s');
+legend('Signal X','Signal Y'); title('Input Signals');
+axis([NZ-0.5 MZ+0.5 -6 +6]); grid on;
+subplot(2,1,2);
+h=stem(NZ:MZ,Z); set(h,'Color','b');
+legend('Signal Z=X+Y'); title('Output Signal');
+axis([NZ-0.5 MZ+0.5 -6 +6]); grid on;
