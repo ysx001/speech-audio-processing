@@ -30,7 +30,7 @@ A=A(:);
 B=B(:);
 
 w = linspace(-pi, pi, N);
-f = w.*FS./(2*pi);
+f = (w.*FS)./(2*pi);
 
 x = exp(j*w);
 N1 = length(A)
@@ -38,20 +38,34 @@ N2 = length(B)
 denominator = polyval(A, x)./exp(j.*w*(length(A)-1));
 numerator = polyval(B, x)./exp(j.*w*(length(B)-1));
 H = numerator ./ denominator;
-
-subplot(2,1,1);
-h = plot(w, abs(H));
-set(h,'Color',[1 0 0],'LineWidth',2)
-axis([-4 4 -0.5 1.5]); grid on
-title('Magnitude Response');
-
-subplot(2,1,2);
-h = plot(w, angle(H));
-set(h,'Color',[0 0.5 0],'LineWidth',2)
-axis([-4 4 -4 4]); grid on
-title('Phase Response');
+figure
 
 
+if (FS <= 1)
+    subplot(2,1,1);
+    h = plot(w, abs(H));
+    set(h,'Color',[1 0 0],'LineWidth',2)
+    axis([-4 4 -0.5 1.5]); grid on
+    title('Magnitude Response');
+
+    subplot(2,1,2);
+    h = plot(w, angle(H));
+    set(h,'Color',[0 0.5 0],'LineWidth',2)
+    axis([-4 4 -4 4]); grid on
+    title('Phase Response');
+else
+    subplot(2,1,1);
+    h = plot(f, abs(H));
+    set(h,'Color',[1 0 0],'LineWidth',2)
+    axis([-4000 4000 -0.5 1.5]); grid on
+    title('Magnitude Response');
+
+    subplot(2,1,2);
+    h = plot(f, angle(H));
+    set(h,'Color',[0 0.5 0],'LineWidth',2)
+    axis([-4000 4000 -4 4]); grid on
+    title('Phase Response');
+end 
 
 
 
